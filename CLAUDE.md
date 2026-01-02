@@ -45,11 +45,31 @@ Available Android ABIs: `x86_64`, `x86`, `arm64-v8a`, `armeabi-v7a`
 - `XRTRANSPORT_BUILD_MODULE_VULKAN2` - Build Vulkan2 module (enabled in default-debug preset)
 
 ### Build Artifacts
+When using the default-debug preset:
+- Server: `build/default/debug/src/server/xrtransport_server_main`
+- Client runtime: `build/default/debug/src/client/libxrtransport_client.so`
+- Client manifest: `build/default/debug/src/client/xrtransport_client_manifest.json`
+
+When using manual build (`mkdir build && cmake ..`):
 - Server: `build/src/server/xrtransport_server_main`
 - Client runtime: `build/src/client/libxrtransport_client.so`
-- Client manifest: `build/src/client/xrtransport_client_manifest-<config>.json`
+- Client manifest: `build/src/client/xrtransport_client_manifest.json`
 
 ### Running Tests
+Using default-debug preset:
+```bash
+# Serialization fuzzer
+./build/default/debug/test/serialization/serialization_tests
+
+# Transport unit tests
+./build/default/debug/test/transport/transport_tests
+
+# Transport integration tests (requires starting server first)
+./build/default/debug/test/transport/transport_server &
+./build/default/debug/test/transport/transport_integration_tests
+```
+
+Using manual build:
 ```bash
 # Serialization fuzzer
 ./build/test/serialization/serialization_tests
@@ -135,7 +155,7 @@ Location: `code_generation/`
 - Extension support: `include/xrtransport/extensions/enabled_extensions.h`, `extension_functions.h`
 - Test fuzzer: `test/serialization/fuzzer.cpp`
 
-**Function ID management**: `function_ids.json` maps OpenXR functions to protocol IDs. Use `--regenerate-function-ids` flag only for complete regeneration; default behavior incrementally updates IDs when spec changes.
+**Function ID management**: `function_ids.json` (located in project root) maps OpenXR functions to protocol IDs. Use `--regenerate-function-ids` flag only for complete regeneration; default behavior incrementally updates IDs when spec changes.
 
 ### Important Implementation Details
 
